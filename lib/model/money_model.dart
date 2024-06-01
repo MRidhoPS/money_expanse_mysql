@@ -27,3 +27,28 @@ class Money {
     };
   }
 }
+
+class Expense {
+  int? expenseId;
+  final int userId;
+  final double amount;
+  final String description;
+  final String date;
+
+  Expense({
+    this.expenseId,
+    required this.userId,
+    required this.amount,
+    required this.description,
+    required this.date,
+  });
+
+  factory Expense.fromList(List<dynamic> json) {
+    return Expense(
+      userId: json[1],
+      amount: json[2].toDouble(),
+      description: json[3],
+      date: json[4],
+    );
+  }
+}

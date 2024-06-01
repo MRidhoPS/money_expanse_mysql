@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:money_expanse_mysql/api/money_api.dart';
 import 'package:money_expanse_mysql/model/money_model.dart';
+import 'package:money_expanse_mysql/page/account_login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -127,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         email: emailC.text,
                         username: usernameC.text,
                         password: passC.text);
-                    
+
                     try {
                       await apiService.registerAccount(account);
                       showDialog(
@@ -139,7 +140,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             actions: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ));
                                 },
                                 child: const Text("OK"),
                               ),
