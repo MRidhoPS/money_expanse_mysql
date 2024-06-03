@@ -31,7 +31,7 @@ class Money {
 class Expense {
   int? expenseId;
   final int userId;
-  final double amount;
+  final String amount;
   final String description;
   final String date;
 
@@ -46,9 +46,17 @@ class Expense {
   factory Expense.fromList(List<dynamic> json) {
     return Expense(
       userId: json[1],
-      amount: json[2].toDouble(),
+      amount: json[2],
       description: json[3],
       date: json[4],
     );
+  }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'amount': amount,
+      'description': description,
+      'date': date
+    };
   }
 }

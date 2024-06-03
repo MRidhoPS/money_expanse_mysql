@@ -45,7 +45,7 @@ class ApiService {
     }
   }
 
-  Future<int?> getUserId()async{
+  Future<int?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userId');
   }
@@ -62,6 +62,20 @@ class ApiService {
       return expenses;
     } else {
       throw Exception('Failed to load expenses');
+    }
+  }
+
+  Future<void> addEXpenses(Expense expense, int userId) async {
+    final response = await http.post(
+        Uri.parse('${configapp.addExpenseUrl}/$userId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        // jsonEncode mengubah dari dart object menjadi sebuah format json untuk input data, karena data yang di input harus berupa json
+        body: jsonEncode(expense.toJson()));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add student');
     }
   }
 }

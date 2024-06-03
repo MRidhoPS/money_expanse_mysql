@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:money_expanse_mysql/model/money_model.dart';
-
 import '../api/money_api.dart';
+import '../model/money_model.dart';
+import 'add_page.dart';
 
 class HomePage extends StatefulWidget {
   final int userId;
 
   const HomePage({super.key, required this.userId});
-  // const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<Expense>> futureStudents;
-
+  late Future<List<Expense>> futureExpenses;
   ApiService apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
-    // futureStudents = apiService.getExpenses(widget.userId);
-    futureStudents = apiService.getExpenses(widget.userId);
+    fetchExpenses();
+  }
+
+  void fetchExpenses() {
+    futureExpenses = apiService.getExpenses(widget.userId);
   }
 
   @override
@@ -31,8 +32,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Expenses'),
       ),
-      body: FutureBuilder(
-        future: futureStudents,
+      body: FutureBuilder<List<Expense>>(
+        future: futureExpenses,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -41,20 +42,36 @@ class _HomePageState extends State<HomePage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No expenses found'));
           } else {
-            final students = snapshot.data ?? [];
+            final expenses = snapshot.data ?? [];
             return ListView.builder(
-              itemCount: students.length,
+              itemCount: expenses.length,
               itemBuilder: (BuildContext context, int index) {
-                final dataIndex = students[index];
+                final expense = expenses[index];
                 return ListTile(
-                  title: Text(dataIndex.description),
-                  subtitle: Text('Amount: ${dataIndex.amount}'),
-                  // trailing: Text(dataIndex['date']),
+                  title: Text(expense.description),
+                  subtitle: Text('Amount: ${expense.amount}'),
+                  trailing: Text(expense.date),
                 );
               },
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddPage(userId: widget.userId),
+            ),
+          );
+          if (result == true) {
+            setState(() {
+              fetchExpenses(); // Fetch latest data when returning to the home page
+            });
+          }
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
