@@ -65,6 +65,29 @@ class ApiService {
     }
   }
 
+  Future<double> getTotalExpenses(int userId) async {
+    final response = await http
+        .get(Uri.parse('${configapp.baseUrl}/expenses/total/$userId'));
+
+    if (response.statusCode == 200) {
+      // Mengambil dan memeriksa data dari respons API
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      // Pastikan nilai yang diharapkan ada dan tidak null
+      // if (data.containsKey('total_expenses') &&
+      //     data['total_expenses'] != null) {
+      //   return (data['total_expenses'] as double).toDouble();
+      // } else {
+      //   return 0.0; // Kembalikan nilai default jika 'total_expenses' tidak ditemukan
+
+      final total = double.parse(data['total_expenses']);
+      return total;
+    } else {
+      // Jika respons API gagal, lemparkan pengecualian
+      throw Exception('Failed to load total expenses');
+    }
+  }
+
   Future<void> addEXpenses(Expense expense, int userId) async {
     final response = await http.post(
         Uri.parse('${configapp.addExpenseUrl}/$userId'),

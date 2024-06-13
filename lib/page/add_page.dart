@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:money_expanse_mysql/widget/format_app.dart';
 import '../api/money_api.dart';
 import '../model/money_model.dart';
 
@@ -13,6 +14,7 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   TextEditingController amountController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  double? amountC;
   final _formKey = GlobalKey<FormState>();
 
   ApiService apiService = ApiService();
@@ -31,15 +33,15 @@ class _AddPageState extends State<AddPage> {
             children: [
               TextFormField(
                 controller: amountController,
-                keyboardType: TextInputType.number,
+                // keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: 'Amount'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an amount';
                   }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
+                  // if (double.tryParse(value) == null) {
+                  //   return 'Please enter a valid number';
+                  // }
                   return null;
                 },
               ),
@@ -65,7 +67,7 @@ class _AddPageState extends State<AddPage> {
 
                     final expense = Expense(
                       userId: widget.userId,
-                      amount: amountController.text,
+                      amount: double.parse(amountController.text),
                       description: descriptionController.text,
                       date: DateTime.now().toIso8601String(),
                     );

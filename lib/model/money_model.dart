@@ -31,7 +31,7 @@ class Money {
 class Expense {
   int? expenseId;
   final int userId;
-  final String amount;
+  final double amount;
   final String description;
   final String date;
 
@@ -44,6 +44,7 @@ class Expense {
   });
 
   factory Expense.fromList(List<dynamic> json) {
+
     return Expense(
       userId: json[1],
       amount: json[2],
@@ -59,4 +60,6 @@ class Expense {
       'date': date
     };
   }
+
+
 }
