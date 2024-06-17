@@ -1,10 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:money_expanse_mysql/page/onboarding_page.dart';
 
 import '../api/money_api.dart';
 import 'account_login.dart';
-import 'home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,10 +26,16 @@ class _SplashScreenState extends State<SplashScreen> {
     final userId = await apiService.getUserId();
     if (!mounted) return;
     if (userId != null) {
+      // Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => HomePage(userId: userId),
+      //     ),
+      //     (route) => false);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(userId: userId),
+            builder: (context) => OnboardingPage(userId: userId,)
           ),
           (route) => false);
     } else {

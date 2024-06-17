@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:money_expanse_mysql/widget/format_app.dart';
 import '../api/money_api.dart';
 import '../model/money_model.dart';
 
@@ -14,7 +13,6 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   TextEditingController amountController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  double? amountC;
   final _formKey = GlobalKey<FormState>();
 
   ApiService apiService = ApiService();

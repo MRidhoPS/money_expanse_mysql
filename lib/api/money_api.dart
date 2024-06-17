@@ -73,15 +73,13 @@ class ApiService {
       // Mengambil dan memeriksa data dari respons API
       Map<String, dynamic> data = jsonDecode(response.body);
 
-      // Pastikan nilai yang diharapkan ada dan tidak null
-      // if (data.containsKey('total_expenses') &&
-      //     data['total_expenses'] != null) {
-      //   return (data['total_expenses'] as double).toDouble();
-      // } else {
-      //   return 0.0; // Kembalikan nilai default jika 'total_expenses' tidak ditemukan
-
-      final total = double.parse(data['total_expenses']);
-      return total;
+      if (data.containsKey('total_expenses') &&
+          data['total_expenses'] != null) {
+        final total = double.parse(data['total_expenses']);
+        return total;
+      } else {
+        return 0.0;
+      }
     } else {
       // Jika respons API gagal, lemparkan pengecualian
       throw Exception('Failed to load total expenses');
@@ -99,6 +97,33 @@ class ApiService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to add student');
+    }
+  }
+
+  Future<void> deleteExpense(int userId, int expenseId) async {
+    final response = await http.delete(
+      Uri.parse('${configapp.deleteExpenseUrl}/$userId/$expenseId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete data');
+    }
+  }
+
+  Future<void> editExpense(int userId, int expenseId, Expense expense) async {
+    final response = await http.put(
+        Uri.parse("${configapp.updateExpenseUrl}/$userId/$expenseId"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(expense.editJson()));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update student');
+    } else {
+      print(response.body);
     }
   }
 }

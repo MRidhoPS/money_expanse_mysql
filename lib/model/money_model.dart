@@ -29,7 +29,7 @@ class Money {
 }
 
 class Expense {
-  int? expenseId;
+  final int? expenseId;
   final int userId;
   final double amount;
   final String description;
@@ -46,6 +46,7 @@ class Expense {
   factory Expense.fromList(List<dynamic> json) {
 
     return Expense(
+      expenseId: json[0],
       userId: json[1],
       amount: json[2],
       description: json[3],
@@ -61,5 +62,14 @@ class Expense {
     };
   }
 
+   Map<String, dynamic> editJson() {
+    return {
+      'expense_id': expenseId,
+      'user_id': userId,
+      'amount': amount,
+      'description': description,
+      'date': date,
+    };
+  }
 
 }
