@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -26,7 +24,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(
-      Uri.parse('${configapp.baseUrl}/login'),
+      Uri.parse(configapp.loginUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -38,6 +36,7 @@ class ApiService {
       final responData = jsonDecode(response.body);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('userId', responData['user_id']);
+      await prefs.setString('name', responData['username']);
       return responData;
     } else {
       print("Login failed: ${response.body}");
@@ -45,9 +44,22 @@ class ApiService {
     }
   }
 
-  Future<int?> getUserId() async {
+  Future<dynamic> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userId');
+  }
+
+  Future<dynamic> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('name');
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Remove userId and other related data
+    await prefs.remove('userId');
+    await prefs.remove('name');
+    // Add any other data that needs to be cleared
   }
 
   Future<List<Expense>> getExpenses(int userID) async {

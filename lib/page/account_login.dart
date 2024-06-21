@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 
 import '../api/money_api.dart';
@@ -67,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(userId: userId),
+                            builder: (context) => HomePage(userId: userId, name: emailC.text,),
                             // builder: (context) => const HomePage(),
                           ),
                           (route) => false);
@@ -79,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   } catch (e) {
                     // Handle login failure
-                    print('Login failed: $e');
+                    // print('Login failed: $e');
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Failed to login')),
                     );
@@ -88,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text("Login"),
               ),
             ),
+
           ],
         ),
       ),

@@ -21,10 +21,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(userId: widget.userId),
-                    ),);
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(userId: widget.userId),
+                  ),
+                );
               },
               child: Container(
                 height: MediaQuery.of(context).size.height / 3,
